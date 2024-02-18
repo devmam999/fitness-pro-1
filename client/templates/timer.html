@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Timer</title>
+    <style>
+        #timer {
+            font-size: 24px;
+            text-align: center;
+            margin-top: 100px;
+        }
+
+        #pauseButton {
+            display: block;
+            margin: 20px auto;
+            padding: 10px;
+            background-color: #0000FF;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        #exitButton {
+            display: block;
+            margin: 20px auto;
+            padding: 10px;
+            background-color: #FF0000;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <div id="timer"></div>
+    <button id="pauseButton">Pause</button>
+    <button id="exitButton">Exit</button>
+
+    <script>
+        const urlParams = new URLSearchParams(window.location.search);
+        const time = parseInt(urlParams.get('time'));
+
+        let countdownTime = time * 60;
+        let timerInterval;
+
+        function updateTimer() {
+            const minutes = Math.floor(countdownTime / 60);
+            const seconds = countdownTime % 60;
+
+            document.getElementById('timer').innerHTML = `${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
+
+            if (countdownTime <= 0) {
+                clearInterval(timerInterval);
+                document.getElementById('timer').innerHTML = 'Time is up!';
+            }
+        }
+
+        function pauseResumeTimer() {
+            if (timerInterval) {
+                clearInterval(timerInterval);
+                timerInterval = null; // Reset the interval reference
+                document.getElementById('pauseButton').innerHTML = 'Resume';
+            } else {
+                timerInterval = setInterval(function () {
+                    countdownTime--;
+                    updateTimer();
+                }, 1000);
+                document.getElementById('pauseButton').innerHTML = 'Pause';
+            }
+        }
+
+        function exitTimer() {
+            clearInterval(timerInterval);
+            const url = 'workouts?time=' + (countdownTime / 60); // Adjust the URL as needed
+            window.location.href = url;
+        }
+
+        updateTimer(); // Initial update
+        timerInterval = setInterval(function () {
+            countdownTime--;
+            updateTimer();
+        }, 1000);
+
+        document.getElementById('pauseButton').addEventListener('click', pauseResumeTimer);
+        document.getElementById('exitButton').addEventListener('click', exitTimer);
+    </script>
+</body>
+</html>
