@@ -5,7 +5,7 @@ import openai
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///db.sqlite3'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-openai.api_key = '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'
+openai.api_key = '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'
 
 
 db = SQLAlchemy(app)
@@ -22,7 +22,7 @@ class Responses(db.Model):
     diet = db.Column(db.String(50))
 
 
-app.config['OPENAI_API_KEY'] = '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'
+app.config['OPENAI_API_KEY'] = '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'
 
 
 @app.route("/")
@@ -45,7 +45,7 @@ def questionare():
 @app.route("/workouts")
 def workouts():
     latest_response = Responses.query.order_by(Responses.id.desc()).first()
-    prompt = f"Generate a workout for a person with age {latest_response.age}, weight {latest_response.weight}, height {latest_response.height}, goal {latest_response.goal}, diet {latest_response.diet}, and time commitment {latest_response.commitment}, sorted in a list format"
+    prompt = f"Generate a daily workout routine to follow for a person with age {latest_response.age}, weight {latest_response.weight}, height {latest_response.height}, goal {latest_response.goal}, diet {latest_response.diet}, and time commitment {latest_response.commitment}"
     openai_response = openai.ChatCompletion.create(
         model="gpt-3.5-turbo",
         messages = [
@@ -55,18 +55,18 @@ def workouts():
     generated_text = openai_response['choices'][0]['message']['content']
     items = generated_text.split('\n')
 
-    html_output = '<ol id="ogList">'
+    html_output = '<ul id="ogList">'
     for item in items:
         if item: 
             if '**' in item:  
                 html_output += f'<li><strong>{item.replace("**", "")}</strong></li>'
             else:
                 html_output += f'<li>{item}</li>'
-    html_output += '</ol>'
+    html_output += '</ul>'
     return render_template('workouts.html', workout=html_output)
 @app.route("/timer")
 def timer():
-    return "Countdown!"
+    return render_template("timer.html")
 if __name__ == "__main__":
     db.create_all()
     app.run(debug=True)
