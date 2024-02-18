@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Fitness App</title>
+<style>
+  body {
+    background-color: #000000;
+  }
+  h1 {
+    color: blue;
+    font-size: 25px;
+  }
+  button {
+    background-color: blue;
+    color: white;
+    font-size: 35px;
+    height: 50%;
+    width: 50%;
+
+  }
+  .center {
+    margin:0;
+    position:absolute;
+    top:50%;
+    left:50%;
+    -ms-transform:translate(-50%,-50%);
+    transform: translate(-50%,-50%);
+  }
+  p {
+    color: blue; 
+  }
+
+
+</style>
+</head>
+<body>
+<h1>Fitness App</h1>
+  <div class="container">
+    <div class="center">
+<a href="{{ url_for('questionare') }}"><button type="button">Get started!</button></a>
+<p>This app has a questionaire and based on your height, weight and facors revolving around your health. Based on the form, you will get a fitness plan that is right for you! </p>
+</form>
+    </div>
+  </div>
+  </button>
+ 
+</body>
+</html>

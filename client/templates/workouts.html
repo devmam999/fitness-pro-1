@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+    <style>
+        button {
+            background-color: blue;
+            color:white;
+        }
+    </style>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Generated Workouts</title>
+</head>
+<body>  
+   {{ workout | safe }}
+
+   
+    
+  <script>
+    var ogList = document.getElementById('ogList');
+    var listItems = ogList.getElementsByTagName('li');
+    for (var i = listItems.length - 1; i >= 0; i--) {
+        var listItem = listItems[i];
+
+        if (!isNaN(listItem.textContent.charAt(0))) {
+            continue;
+        }
+        
+        var button = document.createElement('button');
+        
+        button.textContent = listItem.textContent;
+        
+
+        listItem.parentNode.insertBefore(button, listItem);
+        
+
+        listItem.parentNode.removeChild(listItem);
+    }
+    
+  </script>
+</body>
+</html>
